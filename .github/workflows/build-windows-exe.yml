@@ -1,0 +1,27 @@
+name: Build AAII AI 3D Studio Windows EXE
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '*.py'
+      - 'requirements-app.txt'
+      - 'build_windows.bat'
+      - '.github/workflows/build-windows-exe.yml'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          architecture: x64
+      - name: Build EXE
+        shell: cmd
+        run: call build_windows.bat < NUL
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AAII_AI_3D_Studio_V1_2_Windows_EXE
+          path: AAII_AI_3D_Studio_V1_2_Windows_EXE.zip
+          if-no-files-found: error
